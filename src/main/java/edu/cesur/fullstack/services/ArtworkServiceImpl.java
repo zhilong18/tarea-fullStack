@@ -3,16 +3,20 @@ package edu.cesur.fullstack.services;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import edu.cesur.fullstack.exeptions.ArtworkCreationException;
 import edu.cesur.fullstack.exeptions.artistNotFoundException;
+import edu.cesur.fullstack.model.ArtistDTO;
 import edu.cesur.fullstack.model.ArtworkDTO;
 
+@Service
 public class ArtworkServiceImpl implements ArtworkService{
 
 	ArrayList<ArtworkDTO> artes = new ArrayList<>();
-	Integer cont = 1;
+	
 	@Autowired
-	ArtworkService artworkService;
+	ArtistService artistService;
 	
 	
 	@Override
@@ -42,8 +46,16 @@ public class ArtworkServiceImpl implements ArtworkService{
 
 	@Override
 	public void createArtwork(ArtworkDTO artworkDTO) {
-		
-		
+		ArtistDTO artist;
+		artist = artistService.getArtistById(artworkDTO.getArtistId());
+        if(artworkDTO.getArtistId() == artist.getId()) {
+            artes.add(artworkDTO);
+        }
+        else {
+            throw new ArtworkCreationException("el artista no esta comprendido entre la élite");
+
+
+    }
 			
 		}
 		
